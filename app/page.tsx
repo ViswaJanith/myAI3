@@ -33,6 +33,17 @@ const formSchema = z.object({
 
 const STORAGE_KEY = 'chat-messages';
 
+// Collection of inspiring trek/adventure quotes
+const TREK_QUOTES = [
+  { text: "The mountains are calling and I must go.", author: "John Muir" },
+  { text: "It is not the mountain we conquer, but ourselves.", author: "Sir Edmund Hillary" },
+  { text: "The journey of a thousand miles begins with a single step.", author: "Lao Tzu" },
+  { text: "In every walk with nature one receives far more than he seeks.", author: "John Muir" },
+  { text: "Leave the road, take the trails.", author: "Pythagoras" },
+  { text: "Happiness is not at the top of the mountain, but in how to climb it.", author: "Confucius" },
+  { text: "To travel, to experience and learn: that is to live.", author: "Tenzing Norgay" }
+];
+
 type StorageData = {
   messages: UIMessage[];
   durations: Record<string, number>;
@@ -99,13 +110,17 @@ export default function Chat() {
 
   useEffect(() => {
     if (isClient && initialMessages.length === 0 && !welcomeMessageShownRef.current) {
+      // Select a random quote
+      const randomQuote = TREK_QUOTES[Math.floor(Math.random() * TREK_QUOTES.length)];
+      
       const welcomeMessage: UIMessage = {
         id: `welcome-${Date.now()}`,
         role: "assistant",
         parts: [
           {
             type: "text",
-            text: WELCOME_MESSAGE,
+            // Append the quote to the welcome message with markdown formatting
+            text: `${WELCOME_MESSAGE}\n\n> *"${randomQuote.text}"*\n> \n> — **${randomQuote.author}**`,
           },
         ],
       };
