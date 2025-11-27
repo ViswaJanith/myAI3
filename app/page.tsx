@@ -33,15 +33,14 @@ const formSchema = z.object({
 
 const STORAGE_KEY = 'chat-messages';
 
-// Collection of inspiring trek/adventure quotes
+// Collection of Inspiring & Maharashtrian Trek Quotes
 const TREK_QUOTES = [
-  { text: "The mountains are calling and I must go.", author: "John Muir" },
-  { text: "It is not the mountain we conquer, but ourselves.", author: "Sir Edmund Hillary" },
-  { text: "The journey of a thousand miles begins with a single step.", author: "Lao Tzu" },
-  { text: "In every walk with nature one receives far more than he seeks.", author: "John Muir" },
-  { text: "Leave the road, take the trails.", author: "Pythagoras" },
-  { text: "Happiness is not at the top of the mountain, but in how to climb it.", author: "Confucius" },
-  { text: "To travel, to experience and learn: that is to live.", author: "Tenzing Norgay" }
+  { text: "Sahyadri is not just a mountain range, it is a glorious history waiting to be explored.", author: "Sahyadri Spirit" },
+  { text: "Jithe Shivrayanche pay lagle, ti mati amhala pavitra aahe.\n(Where Chhatrapati Shivaji Maharaj stepped, that soil is sacred.)", author: "Fort Lover" },
+  { text: "Har Har Mahadev! The climb is tough, but the view from the top is worth it.", author: "Trek Mantra" },
+  { text: "Garva ahe mala mi Marathi aslyacha.\n(Proud to be Maharashtrian, Proud to contain the Sahyadris.)", author: "Marathi Pride" },
+  { text: "The forts of Maharashtra are not just stones; they are living stories of valor and sacrifice.", author: "History of Marathas" },
+  { text: "Leave the road, take the trails to the Gad-Kille (Forts).", author: "Pythagoras (Adapted)" },
 ];
 
 type StorageData = {
@@ -109,6 +108,7 @@ export default function Chat() {
   };
 
   useEffect(() => {
+    // Only show welcome message if chat is empty
     if (isClient && initialMessages.length === 0 && !welcomeMessageShownRef.current) {
       // Select a random quote
       const randomQuote = TREK_QUOTES[Math.floor(Math.random() * TREK_QUOTES.length)];
@@ -119,8 +119,8 @@ export default function Chat() {
         parts: [
           {
             type: "text",
-            // Append the quote to the welcome message with markdown formatting
-            text: `${WELCOME_MESSAGE}\n\n> *"${randomQuote.text}"*\n> \n> — **${randomQuote.author}**`,
+            // Big Bold Header with Saffron Flag for Maharashtrian Feel
+            text: `# Jay Shivray! 🚩\n\n### *"${randomQuote.text}"*\n\n**— ${randomQuote.author}**\n\n---\n${WELCOME_MESSAGE}`,
           },
         ],
       };
@@ -148,6 +148,12 @@ export default function Chat() {
     setMessages(newMessages);
     setDurations(newDurations);
     saveMessagesToStorage(newMessages, newDurations);
+    
+    // Reset ref so welcome message can show again on reload if desired, 
+    // though typically clear chat leaves it empty until user types.
+    // If you want the welcome message to reappear immediately after clear, uncomment below:
+    // window.location.reload(); 
+    
     toast.success("Chat cleared");
   }
 
