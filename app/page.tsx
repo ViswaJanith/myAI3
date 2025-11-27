@@ -140,13 +140,14 @@ export default function Chat() {
     <div className="flex h-screen items-center justify-center font-sans">
       <main className="w-full h-screen relative">
         {/* Background Image Layer */}
-        {/* CHANGED: Using standard <img> tag to bypass Next.js external image restrictions */}
         <div className="fixed inset-0 z-0 pointer-events-none">
           <img
             src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=3540&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Mountain Trek Background"
-            className="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-10 grayscale-[20%]"
+            className="absolute inset-0 w-full h-full object-cover opacity-40 dark:opacity-20"
           />
+          {/* Subtle overlay to ensure text remains readable over the mountains */}
+          <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px]"></div>
         </div>
 
         <div className="fixed top-0 left-0 right-0 z-50 bg-linear-to-b from-background via-background/50 to-transparent overflow-visible pb-16">
