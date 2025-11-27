@@ -175,6 +175,56 @@ export default function Chat() {
           <div className="absolute inset-0 bg-stone-50/40 dark:bg-black/40 backdrop-blur-[1px]"></div>
         </div>
 
+        {/* LEFT STATIC SIDE PANEL (Hidden on small screens) */}
+        <div className="fixed left-12 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-8 max-w-[280px] z-0 pointer-events-none select-none">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-black text-stone-800/60 dark:text-stone-100/60 uppercase tracking-widest border-b-4 border-emerald-600/30 pb-2">
+              Sahyadri Gems
+            </h2>
+            <ul className="text-xl font-bold text-stone-700/50 dark:text-stone-300/50 space-y-1">
+              <li>Raigad</li>
+              <li>Rajgad</li>
+              <li>Torna</li>
+              <li>Harishchandragad</li>
+              <li>Kalsubai</li>
+              <li>Sinhagad</li>
+            </ul>
+          </div>
+          <div className="space-y-2">
+             <h3 className="text-2xl font-black text-stone-800/60 dark:text-stone-100/60 uppercase tracking-widest">
+              Elevation
+            </h3>
+             <p className="text-xl font-bold text-stone-700/50 dark:text-stone-300/50">
+               1,646m <span className="text-sm font-normal opacity-70">(Highest Peak)</span>
+             </p>
+          </div>
+        </div>
+
+        {/* RIGHT STATIC SIDE PANEL (Hidden on small screens) */}
+        <div className="fixed right-12 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-8 max-w-[280px] z-0 pointer-events-none select-none text-right items-end">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-black text-stone-800/60 dark:text-stone-100/60 uppercase tracking-widest border-b-4 border-emerald-600/30 pb-2">
+              Essentials
+            </h2>
+            <ul className="text-xl font-bold text-stone-700/50 dark:text-stone-300/50 space-y-1">
+              <li>Trekking Shoes</li>
+              <li>2L Water</li>
+              <li>First Aid Kit</li>
+              <li>Windcheater</li>
+              <li>Dry Snacks</li>
+              <li>Power Bank</li>
+            </ul>
+          </div>
+          <div className="space-y-2">
+             <h3 className="text-2xl font-black text-stone-800/60 dark:text-stone-100/60 uppercase tracking-widest">
+              Respect Nature
+            </h3>
+             <p className="text-xl font-bold text-stone-700/50 dark:text-stone-300/50">
+               Leave No Trace
+             </p>
+          </div>
+        </div>
+
         <div className="fixed top-0 left-0 right-0 z-50 bg-linear-to-b from-background via-background/50 to-transparent overflow-visible pb-16">
           <div className="relative overflow-visible">
             <ChatHeader>
