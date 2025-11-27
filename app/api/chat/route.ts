@@ -1,5 +1,5 @@
-
-import { streamText, UIMessage, convertToModelMessages, stepCountIs, createUIMessageStream, createUIMessageStreamResponse } from 'ai';
+import { streamText, UIMessage, convertToModelMessages, stepCountIs, createUIMessageStream, createUIMessageStreamResponse, tool } from 'ai';
+import { z } from 'zod'; // Added z import
 import { MODEL } from '@/config';
 import { SYSTEM_PROMPT } from '@/prompts';
 import { isContentFlagged } from '@/lib/moderation';
@@ -7,6 +7,22 @@ import { webSearch } from './tools/web-search';
 import { vectorDatabaseSearch } from './tools/search-vector-database';
 
 export const maxDuration = 30;
+
+// ------------------------------------
+// NEW TOOL DEFINITION: show_photos
+// ------------------------------------
+const show_photos = tool({
+  description: 'Display a photo carousel for a specific trek location or fort. Use this whenever the user asks to see photos, visuals, or images of a trek, mountain, or fort.',
+  parameters: z.object({
+    location: z.string().describe('The name of the fort or trek location to show photos for (e.g., "Rajgad", "Torna").'),
+  }),
+  execute: async ({ location }) => {
+    // The UI (AssistantMessage) handles the actual image rendering based on the location name.
+    return { location, message: `Displaying photos for ${location}` };
+  },
+});
+// ------------------------------------
+
 export async function POST(req: Request) {
     const { messages }: { messages: UIMessage[] } = await req.json();
 
@@ -66,6 +82,7 @@ export async function POST(req: Request) {
         tools: {
             webSearch,
             vectorDatabaseSearch,
+            show_photos, // <--- NEW TOOL ADDED HERE
         },
         stopWhen: stepCountIs(10),
         providerOptions: {
@@ -81,5 +98,3 @@ export async function POST(req: Request) {
         sendReasoning: true,
     });
 }
-
-
