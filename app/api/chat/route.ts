@@ -82,14 +82,4 @@ export async function POST(req: Request) {
     });
 }
 
-show_photos: tool({
-  description: 'Display a photo carousel for a specific trek location or fort. Use this whenever the user asks to see photos, visuals, or images of a trek.',
-  parameters: z.object({
-    location: z.string().describe('The name of the fort or trek location to show photos for (e.g., "Rajgad", "Torna").'),
-  }),
-  execute: async ({ location }) => {
-    // This tool is client-side visual only, so the server just acknowledges it.
-    // The UI (AssistantMessage) handles the actual image rendering based on the location name.
-    return { location, message: `Displaying photos for ${location}` };
-  },
-}),
+
