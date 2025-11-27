@@ -50,50 +50,54 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
 
     // 5. Handlers
     const handleWhatsAppShare = () => {
-        // --- WHATSAPP CONTENT CLEANUP FIX V3 (Dynamic Extraction) ---
+        // --- WHATSAPP CONTENT SUMMARY FIX V4 (Focusing on list items and intro) ---
         
         const lines = textContent.split('\n').map(line => line.trim());
-        let cleanLines = [];
-        const maxLines = 10;
-        let lineCount = 0;
+        let summaryLines = [];
+        let capturingDetails = false;
+        const maxDetails = 6; // Max 6 trek names/days to share
+        let detailCount = 0;
 
-        // 1. Get the first two introductory paragraphs/lines
-        for (let i = 0; i < lines.length && lineCount < 2; i++) {
-            if (lines[i].length > 5 && !lines[i].includes('|')) { // Skip short lines and tables
-                cleanLines.push(lines[i].replace(/#+\s*/g, '').trim());
-                lineCount++;
+        // 1. Get the introductory text (up to the first table/list header)
+        for (const line of lines) {
+            if (line.match(/Trek Name|Itinerary Details/i) || line.includes('|')) {
+                // Stop capturing intro when the list/table starts
+                break;
+            }
+            if (line.length > 5 && !line.includes('---')) {
+                summaryLines.push(line.replace(/#+\s*/g, '').trim());
             }
         }
         
-        cleanLines.push('\n\n*--- Top Treks ---*');
+        summaryLines.push('\n*--- Suggested Treks ---*');
 
-        // 2. Extract key trek names/details (look for list items or headers after the intro)
+        // 2. Extract key trek names/day summaries
         for (const line of lines) {
-            if (lineCount >= maxLines) break;
-
-            // Aggressive cleaning to remove Markdown noise:
+            if (detailCount >= maxDetails) break;
+            
+            // Clean up the line
             let cleanLine = line
-                .replace(/#+\s*/g, '') // Remove headers
-                .replace(/---\s*/g, '') // Remove horizontal rule
-                .replace(/\|/g, ' ') // Remove all pipes
-                .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove markdown links, keep text
-                .replace(/\*\*/g, '*') // Convert bold markdown to simple asterisk for WhatsApp
-                .replace(/ \s+/g, ' ') // Remove extra whitespace
+                .replace(/#+\s*/g, '')
+                .replace(/---\s*/g, '')
+                .replace(/\|/g, ' ')
+                .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+                .replace(/\*\*/g, '*')
+                .replace(/ \s+/g, ' ')
                 .trim();
             
-            // If the line looks like a Trek Name (starts with 1., 2., or a bold Trek Name)
-            if (cleanLine.match(/^\s*(\d+\.|-)\s*(\w+)/) || cleanLine.includes("Trek Name")) {
-                cleanLines.push('• ' + cleanLine);
-                lineCount++;
-            } else if (cleanLine.includes("Difficulty") || cleanLine.includes("Elevation") || cleanLine.includes("Cost")) {
-                // If it's a detail line, include it briefly
-                cleanLines.push('  • ' + cleanLine.substring(0, 50) + '...');
-                lineCount++;
+            // If the line is a Trek Name (numbered/list item) or a Day summary
+            if (cleanLine.match(/^\s*(\d+\.|-|\*)\s*(\w+)/) || cleanLine.includes("Day") && !cleanLine.includes("Route")) {
+                summaryLines.push('• ' + cleanLine);
+                detailCount++;
             }
         }
 
-        const shareContent = cleanLines.join('\n');
-        const finalMessage = `*Jay Shivray! 🚩*\n\n*TrekMate Plan Found:*\n${shareContent}\n\nWant to join me?`;
+        if (detailCount === 0) {
+            summaryLines.push("• (No detailed plan found, ask TrekMate for a specific route!)");
+        }
+
+        const shareContent = summaryLines.join('\n');
+        const finalMessage = `*Jay Shivray! 🚩* (Invite)\n\n${shareContent}\n\nWant to join me?`;
         // ------------------------------------
         
         window.open(`https://wa.me/?text=${encodeURIComponent(finalMessage)}`, '_blank');
