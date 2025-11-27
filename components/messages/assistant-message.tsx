@@ -10,9 +10,9 @@ import { Mail, MessageCircle, Share2, Send, Image as ImageIcon } from "lucide-re
 import dynamic from "next/dynamic";
 
 // Dynamic import for the carousel to ensure it loads on the client side
-const PhotoCarousel = dynamic(() => import('@/components/ai-elements/photo-carousel').then(mod => mod.PhotoCarousel), {
-    loading: () => <div className="w-full aspect-video bg-stone-200 animate-pulse rounded-xl" />
-});
+// const PhotoCarousel = dynamic(() => import('@/components/ai-elements/photo-carousel').then(mod => mod.PhotoCarousel), {
+//     loading: () => <div className="w-full aspect-video bg-stone-200 animate-pulse rounded-xl" />
+// });
 
 export function AssistantMessage({ message, status, isLastMessage, durations, onDurationChange }: { message: UIMessage; status?: string; isLastMessage?: boolean; durations?: Record<string, number>; onDurationChange?: (key: string, duration: number) => void }) {
     
@@ -153,15 +153,15 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
                     } else if (part.type === "tool-invocation") {
                         const toolPart = part as ToolCallPart;
                         
-                        // --- PHOTO CAROUSEL LOGIC ---
-                        if (toolPart.toolInvocation.toolName === 'show_photos') {
-                            const { location } = toolPart.toolInvocation.args;
-                            return (
-                                <div key={`${message.id}-${i}`} className="w-full my-2">
-                                    <PhotoCarousel location={location} />
-                                </div>
-                            );
-                        }
+                        // // --- PHOTO CAROUSEL LOGIC ---
+                        // if (toolPart.toolInvocation.toolName === 'show_photos') {
+                        //     const { location } = toolPart.toolInvocation.args;
+                        //     return (
+                        //         <div key={`${message.id}-${i}`} className="w-full my-2">
+                        //             <PhotoCarousel location={location} />
+                        //         </div>
+                        //     );
+                        // }
                         // -----------------------------
 
                         if ('state' in part && part.state === "output-available") {
