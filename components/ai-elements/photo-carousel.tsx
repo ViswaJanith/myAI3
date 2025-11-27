@@ -22,8 +22,8 @@ const TREK_IMAGES: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1634999468936-224443907a50?w=800&q=80"
   ],
   "kalsubai": [
-    "https://images.unsplash.com/photo-1613977546377-dc4494a48436?w=800&q=80",
-    "https://images.unsplash.com/photo-1672322306789-9132204c3298?w=800&q=80"
+    "https://www.google.com/imgres?q=kalsubai%20trek&imgurl=https%3A%2F%2Fstatic.wixstatic.com%2Fmedia%2F9716d0_b5247f839c8741309c1f1775fa2e0fb5~mv2.jpg%2Fv1%2Ffill%2Fw_548%2Ch_388%2Cal_c%2Cq_80%2Cusm_0.66_1.00_0.01%2Cenc_auto%2F9716d0_b5247f839c8741309c1f1775fa2e0fb5~mv2.jpg&imgrefurl=https%3A%2F%2Fwww.mumbaitrekkers.com%2Fevent-page%2Fkalsubai-monsoon&docid=3LzkN3OCZwYtDM&tbnid=NXo5qya0Lr8F2M&vet=12ahUKEwiKk5isg5KRAxUoXGwGHVcACP8QM3oECBgQAA..i&w=548&h=388&hcb=2&ved=2ahUKEwiKk5isg5KRAxUoXGwGHVcACP8QM3oECBgQAA",
+    "https://www.google.com/imgres?q=kalsubai%20trek&imgurl=https%3A%2F%2Fwww.treksandtrails.org%2Fsystem%2Fimages%2F000%2F313%2F799%2Fc25f4f1f55e9272e9697d3e8b58d0241%2Foriginal%2FKalsubai_Gopro_6_10.jpeg&imgrefurl=https%3A%2F%2Fwww.treksandtrails.org%2Ftours%2Fkalsubai-monsoon-trek-2025&docid=p57wEcEXgIwXFM&tbnid=6dXMFXfOKwd4CM&vet=12ahUKEwiKk5isg5KRAxUoXGwGHVcACP8QM3oECCkQAA..i&w=1280&h=853&hcb=2&ved=2ahUKEwiKk5isg5KRAxUoXGwGHVcACP8QM3oECCkQAA"
   ],
   "sinhagad": [
     "https://images.unsplash.com/photo-1627894483216-2138af692e32?w=800&q=80",
