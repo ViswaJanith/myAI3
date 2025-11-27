@@ -23,7 +23,7 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
         lowerContent.includes("|") || 
         lowerContent.includes("trek") || 
         lowerContent.includes("hike") || 
-        lowerContent.includes("plan") ||
+        lowerContent.includes("plan") || 
         lowerContent.includes("route") ||
         lowerContent.includes("day") ||
         lowerContent.includes("start") ||
@@ -63,7 +63,9 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
             ? `Hello,\n\nI am contacting you regarding the following trek information:\n\n${textContent}`
             : `Hey,\n\nI'm planning a trek and found this on TrekMate:\n\n${textContent}\n\nAre you free to join me?`;
 
-        window.open(`mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_blank');
+        // CHANGED: Using window.location.href is more reliable for mailto links than window.open
+        // which can be blocked by browsers as a popup.
+        window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     };
 
     return (
