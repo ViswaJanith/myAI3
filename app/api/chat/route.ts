@@ -18,7 +18,7 @@ const show_photos = tool({
   }),
   execute: async ({ location }) => {
     // The UI (AssistantMessage) handles the actual image rendering based on the location name.
-    return { location, message: `Displaying photos for ${location}` };
+    return { location, message: `PHOTO_TOOL_TRIGGERED: Displaying photos for ${location}` };
   },
 });
 // ------------------------------------
@@ -84,7 +84,8 @@ export async function POST(req: Request) {
             vectorDatabaseSearch,
             show_photos, // <--- NEW TOOL ADDED HERE
         },
-        stopWhen: stepCountIs(10),
+        // INCREASED STEP COUNT to give the model more time to resolve tool decisions.
+        stopWhen: stepCountIs(15), 
         providerOptions: {
             openai: {
                 reasoningSummary: 'auto',
