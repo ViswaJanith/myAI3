@@ -6,7 +6,13 @@ import { ReasoningPart } from "./reasoning-part";
 import { ToolCall, ToolResult } from "./tool-call";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Mail, MessageCircle, Share2, Send } from "lucide-react";
+import { Mail, MessageCircle, Share2, Send, Image as ImageIcon } from "lucide-react";
+import dynamic from "next/dynamic";
+
+// Dynamic import for the carousel to ensure it loads on the client side
+const PhotoCarousel = dynamic(() => import('@/components/ai-elements/photo-carousel').then(mod => mod.PhotoCarousel), {
+    loading: () => <div className="w-full aspect-video bg-stone-200 animate-pulse rounded-xl" />
+});
 
 export function AssistantMessage({ message, status, isLastMessage, durations, onDurationChange }: { message: UIMessage; status?: string; isLastMessage?: boolean; durations?: Record<string, number>; onDurationChange?: (key: string, duration: number) => void }) {
     
@@ -14,8 +20,6 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
     const textParts = message.parts.filter(p => p.type === 'text');
     const textContent = textParts.map(p => (p as any).text).join(' ');
     const lowerContent = textContent.toLowerCase();
-    
-    // Check if there is ANY text content first
     const hasContent = textContent.length > 10;
 
     // 2. Trek Plan Detection
@@ -30,13 +34,12 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
         lowerContent.includes("reach")
     );
 
-    // 3. Email Address Detection
-    // Regex to find the first email address in the response
+    // 3. Email Extraction
     const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
     const foundEmailMatch = textContent.match(emailRegex);
     const targetEmail = foundEmailMatch ? foundEmailMatch[0] : null;
 
-    // 4. Visual Theme: Topographic Map Pattern
+    // 4. Visual Theme
     const containerClasses = isTrekPlan 
         ? "bg-emerald-50/80 border-2 border-emerald-200/50 dark:bg-emerald-950/30 dark:border-emerald-800 rounded-xl p-5 shadow-sm relative overflow-hidden w-full transition-all duration-500 ease-in-out" 
         : "w-full";
@@ -45,32 +48,32 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18C20 18 20 18 20 18l.5-.5l.5.5v2.5l-.5.5l-.5-.5zM20 18c0-2 2-2 2-4s-2-3-2-5s2-2 2-4V2h-1v2.5c0 1.5-1.5 2-1.5 3.5s1.5 2 1.5 4s-1.5 2-1.5 3.5s1.5 2.5 1.5 2.5zM20 40v-2.5c0-1.5 1.5-2 1.5-3.5s-1.5-2-1.5-4s1.5-2 1.5-3.5s-1.5-2.5-1.5-2.5V22h1v2c0 2-2 2-2 4s2 3 2 5s-2 2-2 4v3h-1z' fill='%23059669' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E")`,
     } : {};
 
-    // 5. Share Handlers
+    // 5. Handlers
     const handleWhatsAppShare = () => {
         const text = `Hey! 🏔️ I found this amazing trek idea on TrekMate:\n\n${textContent.substring(0, 300)}...\n\nWant to join me?`;
         window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     };
 
     const handleEmailShare = () => {
-        // If a specific email was found in the text, use it as the recipient ('to').
-        // Otherwise, leave 'to' blank for the user to fill.
         const recipient = targetEmail ? targetEmail : ""; 
-        const subject = targetEmail 
-            ? "Regarding your Trek Inquiry via TrekMate" // Subject if sending TO a specific contact found
-            : "Invitation: Let's go for a Trek! 🥾"; // Subject if sending invite to friend
-            
+        const subject = targetEmail ? "Regarding your Trek Inquiry via TrekMate" : "Invitation: Let's go for a Trek! 🥾";
         const body = targetEmail
             ? `Hello,\n\nI am contacting you regarding the following trek information:\n\n${textContent}`
             : `Hey,\n\nI'm planning a trek and found this on TrekMate:\n\n${textContent}\n\nAre you free to join me?`;
-
-        // FIXED: Using window.location.href instead of window.open for mailto links.
-        // This prevents the "blank tab" issue and correctly triggers the system mail client.
-        window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        // Try window.location.href first (standard way)
+        window.location.href = mailtoLink;
+        
+        // Fallback: try window.open if the first method fails
+        setTimeout(() => {
+            window.open(mailtoLink, '_blank');
+        }, 500);
     };
 
     return (
         <div className={containerClasses} style={topographicPattern}>
-            {/* Badge for Trek Plans */}
             {isTrekPlan && (
                 <div className="absolute top-0 right-0 m-0 px-3 py-1 bg-emerald-100/80 dark:bg-emerald-900/80 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold uppercase tracking-wider rounded-bl-xl border-l border-b border-emerald-200 dark:border-emerald-800 opacity-90 pointer-events-none z-20">
                     Trek Plan
@@ -95,29 +98,29 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
                                 onDurationChange={onDurationChange ? (d) => onDurationChange(durationKey, d) : undefined}
                             />
                         );
-                    } else if (
-                        part.type.startsWith("tool-") || part.type === "dynamic-tool"
-                    ) {
+                    } else if (part.type === "tool-invocation") {
+                        const toolPart = part as ToolCallPart;
+                        
+                        // --- PHOTO CAROUSEL LOGIC ---
+                        if (toolPart.toolInvocation.toolName === 'show_photos') {
+                            const { location } = toolPart.toolInvocation.args;
+                            return (
+                                <div key={`${message.id}-${i}`} className="w-full my-2">
+                                    <PhotoCarousel location={location} />
+                                </div>
+                            );
+                        }
+                        // -----------------------------
+
                         if ('state' in part && part.state === "output-available") {
-                            return (
-                                <ToolResult
-                                    key={`${message.id}-${i}`}
-                                    part={part as unknown as ToolResultPart}
-                                />
-                            );
+                            return <ToolResult key={`${message.id}-${i}`} part={part as unknown as ToolResultPart} />;
                         } else {
-                            return (
-                                <ToolCall
-                                    key={`${message.id}-${i}`}
-                                    part={part as unknown as ToolCallPart}
-                                />
-                            );
+                            return <ToolCall key={`${message.id}-${i}`} part={part as unknown as ToolCallPart} />;
                         }
                     }
                     return null;
                 })}
 
-                {/* 6. ACTION BUTTONS */}
                 {isTrekPlan && (
                     <div className="mt-6 pt-4 border-t border-emerald-600/30 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between bg-white/40 dark:bg-black/20 p-4 rounded-lg backdrop-blur-sm">
                         <div className="flex flex-col">
