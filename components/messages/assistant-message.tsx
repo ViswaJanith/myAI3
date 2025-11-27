@@ -63,8 +63,8 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
             ? `Hello,\n\nI am contacting you regarding the following trek information:\n\n${textContent}`
             : `Hey,\n\nI'm planning a trek and found this on TrekMate:\n\n${textContent}\n\nAre you free to join me?`;
 
-        // CHANGED: Using window.location.href is more reliable for mailto links than window.open
-        // which can be blocked by browsers as a popup.
+        // FIXED: Using window.location.href instead of window.open for mailto links.
+        // This prevents the "blank tab" issue and correctly triggers the system mail client.
         window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     };
 
