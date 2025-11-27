@@ -14,8 +14,10 @@ export const TOOL_CALLING_PROMPT = `
 `;
 
 export const TONE_STYLE_PROMPT = `
-- Maintain a friendly, helpful, trek-guide–like tone.
-- Keep responses crisp, clear, and decision-oriented.
+- Maintain an adventurous, encouraging, yet safety-conscious tone.
+- **MANDATORY FORMATTING:** When asked for an itinerary or route plan, you MUST output the data as a MARKDOWN TABLE.
+- The table must use the following headers: | Day | Route/Activity | Distance/Time | Elevation |
+- Do not use bullet points for the main itinerary; use the table.
 - Avoid complex wording; focus on practical info a trekker needs.
 `;
 
