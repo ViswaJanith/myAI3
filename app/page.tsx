@@ -120,7 +120,10 @@ export default function Chat() {
           {
             type: "text",
             // Big Bold Header with Saffron Flag for Maharashtrian Feel
-            text: `# Jay Shivray! 🚩\n\n### *"${randomQuote.text}"*\n\n**— ${randomQuote.author}**\n\n---\n${WELCOME_MESSAGE}`,
+            // Added explicit styling marks for the renderer to pick up if customized, 
+            // but standard markdown relies on # for size.
+            // Using a blockquote > for the quote to make it distinct.
+            text: `# Jay Shivray! 🚩\n\n> ### *"${randomQuote.text}"*\n> \n> — **${randomQuote.author}**\n\n---\n**${WELCOME_MESSAGE}**`,
           },
         ],
       };
@@ -158,17 +161,18 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center font-sans">
+    <div className="flex h-screen items-center justify-center font-sans text-stone-900 dark:text-stone-100">
       <main className="w-full h-screen relative">
         {/* Background Image Layer */}
         <div className="fixed inset-0 z-0 pointer-events-none">
           <img
             src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=3540&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Mountain Trek Background"
-            className="absolute inset-0 w-full h-full object-cover opacity-40 dark:opacity-20"
+            // Increased opacity for visibility, adjusted for readability
+            className="absolute inset-0 w-full h-full object-cover opacity-30 dark:opacity-20 grayscale-[10%]"
           />
           {/* Subtle overlay to ensure text remains readable over the mountains */}
-          <div className="absolute inset-0 bg-background/20 backdrop-blur-[1px]"></div>
+          <div className="absolute inset-0 bg-stone-50/40 dark:bg-black/40 backdrop-blur-[1px]"></div>
         </div>
 
         <div className="fixed top-0 left-0 right-0 z-50 bg-linear-to-b from-background via-background/50 to-transparent overflow-visible pb-16">
@@ -184,13 +188,13 @@ export default function Chat() {
                     <Image src="/logo.png" alt="Logo" width={36} height={36} />
                   </AvatarFallback>
                 </Avatar>
-                <p className="tracking-tight">Chat with {AI_NAME}</p>
+                <p className="tracking-tight font-semibold text-stone-800 dark:text-stone-100">Chat with {AI_NAME}</p>
               </ChatHeaderBlock>
               <ChatHeaderBlock className="justify-end">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-white/50 backdrop-blur-md border-stone-200 dark:bg-black/50 dark:border-stone-800"
                   onClick={clearChat}
                 >
                   <Plus className="size-4" />
@@ -236,7 +240,7 @@ export default function Chat() {
                           <Input
                             {...field}
                             id="chat-form-message"
-                            className="h-15 pr-15 pl-5 bg-card/90 backdrop-blur-sm rounded-[20px]"
+                            className="h-15 pr-15 pl-5 bg-stone-100/90 dark:bg-stone-900/90 backdrop-blur-md rounded-[20px] border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder:text-stone-500 shadow-lg"
                             placeholder="Type your message here..."
                             disabled={status === "streaming"}
                             aria-invalid={fieldState.invalid}
@@ -250,7 +254,7 @@ export default function Chat() {
                           />
                           {(status == "ready" || status == "error") && (
                             <Button
-                              className="absolute right-3 top-3 rounded-full"
+                              className="absolute right-3 top-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white"
                               type="submit"
                               disabled={!field.value.trim()}
                               size="icon"
@@ -260,7 +264,7 @@ export default function Chat() {
                           )}
                           {(status == "streaming" || status == "submitted") && (
                             <Button
-                              className="absolute right-2 top-2 rounded-full"
+                              className="absolute right-2 top-2 rounded-full bg-stone-200 dark:bg-stone-800"
                               size="icon"
                               onClick={() => {
                                 stop();
@@ -277,8 +281,8 @@ export default function Chat() {
               </form>
             </div>
           </div>
-          <div className="w-full px-5 py-3 items-center flex justify-center text-xs text-muted-foreground">
-            © {new Date().getFullYear()} {OWNER_NAME}&nbsp;<Link href="/terms" className="underline">Terms of Use</Link>&nbsp;Powered by&nbsp;<Link href="https://ringel.ai/" className="underline">Ringel.AI</Link>
+          <div className="w-full px-5 py-3 items-center flex justify-center text-xs text-stone-600 dark:text-stone-400 font-medium">
+            © {new Date().getFullYear()} {OWNER_NAME}&nbsp;<Link href="/terms" className="underline hover:text-emerald-600">Terms of Use</Link>&nbsp;Powered by&nbsp;<Link href="https://ringel.ai/" className="underline hover:text-emerald-600">Ringel.AI</Link>
           </div>
         </div>
       </main>
