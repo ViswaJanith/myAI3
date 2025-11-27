@@ -140,6 +140,17 @@ export default function Chat() {
     // Removed dark:bg-black to let body background show through
     <div className="flex h-screen items-center justify-center font-sans">
       <main className="w-full h-screen relative">
+        {/* Background Image Layer */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <Image
+            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=3540&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Mountain Trek Background"
+            fill
+            className="object-cover opacity-15 dark:opacity-5 grayscale-[20%]"
+            priority
+          />
+        </div>
+
         <div className="fixed top-0 left-0 right-0 z-50 bg-linear-to-b from-background via-background/50 to-transparent overflow-visible pb-16">
           <div className="relative overflow-visible">
             <ChatHeader>
@@ -169,7 +180,7 @@ export default function Chat() {
             </ChatHeader>
           </div>
         </div>
-        <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[88px] pb-[150px]">
+        <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[88px] pb-[150px] relative z-10">
           <div className="flex flex-col items-center justify-end min-h-full">
             {isClient ? (
               <>
@@ -205,7 +216,7 @@ export default function Chat() {
                           <Input
                             {...field}
                             id="chat-form-message"
-                            className="h-15 pr-15 pl-5 bg-card rounded-[20px]"
+                            className="h-15 pr-15 pl-5 bg-card/90 backdrop-blur-sm rounded-[20px]"
                             placeholder="Type your message here..."
                             disabled={status === "streaming"}
                             aria-invalid={fieldState.invalid}
