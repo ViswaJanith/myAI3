@@ -40,8 +40,9 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
     const targetEmail = foundEmailMatch ? foundEmailMatch[0] : null;
 
     // 4. Visual Theme
+    // Increased padding (p-6) and retained emerald styling
     const containerClasses = isTrekPlan 
-        ? "bg-emerald-50/80 border-2 border-emerald-200/50 dark:bg-emerald-950/30 dark:border-emerald-800 rounded-xl p-5 shadow-sm relative overflow-hidden w-full transition-all duration-500 ease-in-out" 
+        ? "bg-emerald-50/80 border-2 border-emerald-200/50 dark:bg-emerald-950/30 dark:border-emerald-800 rounded-xl p-6 shadow-xl relative overflow-hidden w-full transition-all duration-500 ease-in-out" 
         : "w-full";
 
     const topographicPattern = isTrekPlan ? {
@@ -129,13 +130,15 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
                 </div>
             )}
 
-            <div className="text-sm flex flex-col gap-4 relative z-10">
+            {/* Base text size increased to text-base and font made semibold */}
+            <div className="text-base font-bold flex flex-col gap-4 relative z-10">
                 {message.parts.map((part, i) => {
                     const isStreaming = status === "streaming" && isLastMessage && i === message.parts.length - 1;
                     const durationKey = `${message.id}-${i}`;
                     const duration = durations?.[durationKey];
 
                     if (part.type === "text") {
+                        // Pass through to Response component (where markdown rendering happens)
                         return <Response key={`${message.id}-${i}`}>{part.text}</Response>;
                     } else if (part.type === "reasoning") {
                         return (
