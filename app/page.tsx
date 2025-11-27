@@ -137,17 +137,15 @@ export default function Chat() {
   }
 
   return (
-    // Removed dark:bg-black to let body background show through
     <div className="flex h-screen items-center justify-center font-sans">
       <main className="w-full h-screen relative">
         {/* Background Image Layer */}
+        {/* CHANGED: Using standard <img> tag to bypass Next.js external image restrictions */}
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <Image
+          <img
             src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=3540&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Mountain Trek Background"
-            fill
-            className="object-cover opacity-15 dark:opacity-5 grayscale-[20%]"
-            priority
+            className="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-10 grayscale-[20%]"
           />
         </div>
 
