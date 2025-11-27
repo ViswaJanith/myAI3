@@ -254,7 +254,10 @@ export default function Chat() {
                     <Image src="/logo.png" alt="Logo" width={36} height={36} />
                   </AvatarFallback>
                 </Avatar>
-                <p className="tracking-tight font-semibold text-stone-800 dark:text-stone-100">Chat with {AI_NAME}</p>
+                <p className="tracking-tight font-semibold text-stone-800 dark:text-stone-100">
+  Chat Seamlessly with <span className="opacity-80">{AI_NAME}</span>
+</p>
+                {/* <p className="tracking-tight font-semibold text-stone-800 dark:text-stone-100">Chat with {AI_NAME}</p> */}
               </ChatHeaderBlock>
               <ChatHeaderBlock className="justify-end">
                 <Button
