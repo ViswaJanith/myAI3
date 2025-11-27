@@ -175,54 +175,70 @@ export default function Chat() {
           <div className="absolute inset-0 bg-stone-50/40 dark:bg-black/40 backdrop-blur-[1px]"></div>
         </div>
 
-        {/* LEFT STATIC SIDE PANEL (Hidden on small screens) */}
-        <div className="fixed left-12 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-8 max-w-[280px] z-0 pointer-events-none select-none">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-black text-stone-800/60 dark:text-stone-100/60 uppercase tracking-widest border-b-4 border-emerald-600/30 pb-2">
-              Sahyadri Gems
-            </h2>
-            <ul className="text-xl font-bold text-stone-700/50 dark:text-stone-300/50 space-y-1">
-              <li>Raigad</li>
-              <li>Rajgad</li>
-              <li>Torna</li>
-              <li>Harishchandragad</li>
-              <li>Kalsubai</li>
-              <li>Sinhagad</li>
-            </ul>
-          </div>
-          <div className="space-y-2">
-             <h3 className="text-2xl font-black text-stone-800/60 dark:text-stone-100/60 uppercase tracking-widest">
-              Elevation
-            </h3>
-             <p className="text-xl font-bold text-stone-700/50 dark:text-stone-300/50">
-               1,646m <span className="text-sm font-normal opacity-70">(Highest Peak)</span>
-             </p>
-          </div>
+        {/* LEFT STATIC SIDE PANEL (Visible on large screens) */}
+        <div className="fixed left-8 top-28 bottom-28 w-[300px] hidden xl:flex flex-col justify-between z-0 pointer-events-none select-none">
+           {/* News / Updates Section */}
+           <div className="space-y-4 p-6 bg-stone-100/30 dark:bg-black/30 backdrop-blur-sm rounded-2xl border border-stone-200/20 dark:border-stone-800/20">
+              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider border-b-2 border-emerald-600/50 pb-2 mb-3 flex items-center gap-2">
+                <span className="text-2xl">📢</span> Trek News
+              </h2>
+              <div className="space-y-4">
+                  <div className="bg-white/40 dark:bg-black/40 p-3 rounded-lg">
+                    <h3 className="font-bold text-emerald-800 dark:text-emerald-400 text-sm">Fireflies Festival Soon!</h3>
+                    <p className="text-xs text-stone-700 dark:text-stone-300 mt-1">
+                      Pre-monsoon (May-June) is the best time to witness fireflies at Rajmachi, Bhandardara, and Prabalmachi.
+                    </p>
+                  </div>
+                  <div className="bg-white/40 dark:bg-black/40 p-3 rounded-lg">
+                    <h3 className="font-bold text-red-800 dark:text-red-400 text-sm">Monsoon Alert</h3>
+                    <p className="text-xs text-stone-700 dark:text-stone-300 mt-1">
+                      Heavy rains expected in Sahyadris. Avoid waterfall rappelling without expert guides.
+                    </p>
+                  </div>
+                   <div className="bg-white/40 dark:bg-black/40 p-3 rounded-lg">
+                    <h3 className="font-bold text-stone-800 dark:text-stone-200 text-sm">Harihar Fort</h3>
+                    <p className="text-xs text-stone-700 dark:text-stone-300 mt-1">
+                      Crowds are high on weekends. Plan a weekday trek for a safer climb on the steep steps.
+                    </p>
+                  </div>
+              </div>
+           </div>
         </div>
 
-        {/* RIGHT STATIC SIDE PANEL (Hidden on small screens) */}
-        <div className="fixed right-12 top-1/2 -translate-y-1/2 hidden xl:flex flex-col gap-8 max-w-[280px] z-0 pointer-events-none select-none text-right items-end">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-black text-stone-800/60 dark:text-stone-100/60 uppercase tracking-widest border-b-4 border-emerald-600/30 pb-2">
-              Essentials
-            </h2>
-            <ul className="text-xl font-bold text-stone-700/50 dark:text-stone-300/50 space-y-1">
-              <li>Trekking Shoes</li>
-              <li>2L Water</li>
-              <li>First Aid Kit</li>
-              <li>Windcheater</li>
-              <li>Dry Snacks</li>
-              <li>Power Bank</li>
-            </ul>
-          </div>
-          <div className="space-y-2">
-             <h3 className="text-2xl font-black text-stone-800/60 dark:text-stone-100/60 uppercase tracking-widest">
-              Respect Nature
-            </h3>
-             <p className="text-xl font-bold text-stone-700/50 dark:text-stone-300/50">
-               Leave No Trace
-             </p>
-          </div>
+        {/* RIGHT STATIC SIDE PANEL (Visible on large screens) */}
+        <div className="fixed right-8 top-28 bottom-28 w-[300px] hidden xl:flex flex-col justify-between z-0 pointer-events-none select-none text-right">
+            {/* History / Info Section */}
+            <div className="space-y-4 p-6 bg-stone-100/30 dark:bg-black/30 backdrop-blur-sm rounded-2xl border border-stone-200/20 dark:border-stone-800/20">
+               <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider border-b-2 border-emerald-600/50 pb-2 mb-3 flex items-center justify-end gap-2">
+                Did You Know? <span className="text-2xl">🛡️</span>
+              </h2>
+              <div className="space-y-4">
+                  <div className="bg-white/40 dark:bg-black/40 p-3 rounded-lg text-right">
+                    <h3 className="font-bold text-stone-800 dark:text-stone-200 text-sm">Capital of Swarajya</h3>
+                    <p className="text-xs text-stone-700 dark:text-stone-300 mt-1">
+                      Raigad Fort was chosen by Shivaji Maharaj as the capital of the Maratha Empire in 1674.
+                    </p>
+                  </div>
+                  <div className="bg-white/40 dark:bg-black/40 p-3 rounded-lg text-right">
+                    <h3 className="font-bold text-stone-800 dark:text-stone-200 text-sm">Highest Peak</h3>
+                    <p className="text-xs text-stone-700 dark:text-stone-300 mt-1">
+                      Kalsubai (1,646m) is the 'Everest of Maharashtra'. The view from the top is breathtaking!
+                    </p>
+                  </div>
+                   <div className="bg-white/40 dark:bg-black/40 p-3 rounded-lg text-right">
+                    <h3 className="font-bold text-stone-800 dark:text-stone-200 text-sm">Sea Forts</h3>
+                    <p className="text-xs text-stone-700 dark:text-stone-300 mt-1">
+                      Murud Janjira is one of the only invincible marine forts, never conquered by the British, Portuguese, or Siddis.
+                    </p>
+                  </div>
+              </div>
+           </div>
+           
+           <div className="mt-auto">
+             <div className="text-stone-400 dark:text-stone-600 text-[10px] font-mono tracking-tighter opacity-50">
+               COORD: 19.0760° N, 72.8777° E
+             </div>
+           </div>
         </div>
 
         <div className="fixed top-0 left-0 right-0 z-50 bg-linear-to-b from-background via-background/50 to-transparent overflow-visible pb-16">
