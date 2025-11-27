@@ -20,7 +20,21 @@ export const Response = memo(
         rehypeSingleCharLink,
       ]}
       components={{
-        // 1. Custom Link Styling (Emerald Green pop)
+        // 1. General Paragraphs and Text (High Contrast/Guidebook Text)
+        p: ({ node, ...props }) => (
+            <p className="text-stone-800 dark:text-stone-200 font-medium leading-relaxed" {...props} />
+        ),
+        // 2. Headings (Bold, Structured look)
+        h1: ({ node, ...props }) => (
+            <h1 className="text-2xl font-extrabold text-emerald-800 dark:text-emerald-400 mt-6 mb-3 border-b border-emerald-400/30 pb-1" {...props} />
+        ),
+        h2: ({ node, ...props }) => (
+            <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100 mt-5 mb-2" {...props} />
+        ),
+        h3: ({ node, ...props }) => (
+            <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-200 mt-4 mb-1" {...props} />
+        ),
+        // 3. Links (Emerald Green pop)
         a: ({ node, ...props }) => (
             <a
             {...props}
@@ -29,8 +43,11 @@ export const Response = memo(
             className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline decoration-emerald-500 underline-offset-2 transition-colors"
           />
         ),
-        // 2. Custom Table Container -> The "Route Card" Look
-        // CHANGED: bg-white -> bg-stone-50 for a "Paper/Map" feel
+        // 4. Blockquotes (For Quotes, like the welcome quote)
+        blockquote: ({ node, ...props }) => (
+            <blockquote className="border-l-4 border-emerald-600/70 pl-4 py-1 italic text-stone-700 dark:text-stone-300 my-4" {...props} />
+        ),
+        // 5. Custom Table Container -> The "Route Card" Look
         table: ({ node, ...props }) => (
           <div className="my-6 w-full overflow-hidden rounded-xl border-2 border-emerald-700/20 bg-stone-50 dark:bg-stone-900 shadow-md">
              {/* Header Bar for the Table Card */}
@@ -48,17 +65,15 @@ export const Response = memo(
             </div>
           </div>
         ),
-        // 3. Table Header Styling
-        // CHANGED: bg-stone-50 -> bg-stone-100/80 for contrast against the card
+        // 6. Table Header Styling
         thead: ({ node, ...props }) => (
           <thead className="bg-stone-200/50 dark:bg-stone-800/80 text-stone-700 dark:text-stone-300 border-b border-stone-200 dark:border-stone-700" {...props} />
         ),
-        // 4. Table Row Hover Effects
-        // CHANGED: Darker text for readability on stone background
+        // 7. Table Row Hover Effects
         tr: ({ node, ...props }) => (
           <tr className="border-b border-stone-200/60 dark:border-stone-800 last:border-0 hover:bg-emerald-100/40 dark:hover:bg-emerald-900/20 transition-colors" {...props} />
         ),
-        // 5. Table Cell Styling
+        // 8. Table Cell Styling
         th: ({ node, ...props }) => (
           <th className="px-4 py-3 font-bold whitespace-nowrap text-stone-700 dark:text-stone-300" {...props} />
         ),
