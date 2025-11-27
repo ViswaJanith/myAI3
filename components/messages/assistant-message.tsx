@@ -50,27 +50,50 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
 
     // 5. Handlers
     const handleWhatsAppShare = () => {
-        // --- WHATSAPP CONTENT CLEANUP FIX ---
-        // 1. Remove Markdown headers, rules, and table separators for clean text.
-        let cleanText = textContent
-            .replace(/#+\s*/g, '') // Remove ###, ##, # headers
-            .replace(/---\s*/g, '') // Remove horizontal rule
-            .replace(/\|/g, ' | ') // Add spacing around table pipes for readability
-            .replace(/ \s+/g, ' ') // Remove extra whitespace
-            .trim();
+        // --- WHATSAPP CONTENT CLEANUP FIX V3 (Dynamic Extraction) ---
         
-        // 2. Extract the main plan structure (Trek Name and top few lines)
-        // Find Trek Name Headers (1. Trek Name, 2. Trek Name, etc.)
-        const trekLines = cleanText.split('\n').filter(line => line.match(/^\s*(\d+\.|-)\s+/));
-        
-        // Use the introduction and the first 3 lines of trek recommendations
-        const shareContent = [
-            cleanText.split('\n')[0], // The first line (usually the intro)
-            '', // Add a line break
-            ...trekLines.slice(0, 3) // Get the first three trek lines
-        ].join('\n');
+        const lines = textContent.split('\n').map(line => line.trim());
+        let cleanLines = [];
+        const maxLines = 10;
+        let lineCount = 0;
 
-        const finalMessage = `Hey! 🏔️ I found this amazing trek idea on TrekMate:\n\n${shareContent}\n\nWant to join me?`;
+        // 1. Get the first two introductory paragraphs/lines
+        for (let i = 0; i < lines.length && lineCount < 2; i++) {
+            if (lines[i].length > 5 && !lines[i].includes('|')) { // Skip short lines and tables
+                cleanLines.push(lines[i].replace(/#+\s*/g, '').trim());
+                lineCount++;
+            }
+        }
+        
+        cleanLines.push('\n\n*--- Top Treks ---*');
+
+        // 2. Extract key trek names/details (look for list items or headers after the intro)
+        for (const line of lines) {
+            if (lineCount >= maxLines) break;
+
+            // Aggressive cleaning to remove Markdown noise:
+            let cleanLine = line
+                .replace(/#+\s*/g, '') // Remove headers
+                .replace(/---\s*/g, '') // Remove horizontal rule
+                .replace(/\|/g, ' ') // Remove all pipes
+                .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove markdown links, keep text
+                .replace(/\*\*/g, '*') // Convert bold markdown to simple asterisk for WhatsApp
+                .replace(/ \s+/g, ' ') // Remove extra whitespace
+                .trim();
+            
+            // If the line looks like a Trek Name (starts with 1., 2., or a bold Trek Name)
+            if (cleanLine.match(/^\s*(\d+\.|-)\s*(\w+)/) || cleanLine.includes("Trek Name")) {
+                cleanLines.push('• ' + cleanLine);
+                lineCount++;
+            } else if (cleanLine.includes("Difficulty") || cleanLine.includes("Elevation") || cleanLine.includes("Cost")) {
+                // If it's a detail line, include it briefly
+                cleanLines.push('  • ' + cleanLine.substring(0, 50) + '...');
+                lineCount++;
+            }
+        }
+
+        const shareContent = cleanLines.join('\n');
+        const finalMessage = `*Jay Shivray! 🚩*\n\n*TrekMate Plan Found:*\n${shareContent}\n\nWant to join me?`;
         // ------------------------------------
         
         window.open(`https://wa.me/?text=${encodeURIComponent(finalMessage)}`, '_blank');
