@@ -62,11 +62,11 @@ export async function POST(req: Request) {
     const result = streamText({
         model: MODEL,
         system: SYSTEM_PROMPT,
-        tools: {
-        messages: convertToModelMessages(messages),
-            webSearch,
-            vectorDatabaseSearch,
-        },
+        // tools: {
+        // messages: convertToModelMessages(messages),
+        //     webSearch,
+        //     vectorDatabaseSearch,
+        // },
         stopWhen: stepCountIs(10),
         providerOptions: {
             openai: {
