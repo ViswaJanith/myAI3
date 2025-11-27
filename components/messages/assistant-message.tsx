@@ -50,8 +50,30 @@ export function AssistantMessage({ message, status, isLastMessage, durations, on
 
     // 5. Handlers
     const handleWhatsAppShare = () => {
-        const text = `Hey! 🏔️ I found this amazing trek idea on TrekMate:\n\n${textContent.substring(0, 300)}...\n\nWant to join me?`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        // --- WHATSAPP CONTENT CLEANUP FIX ---
+        // 1. Remove Markdown headers, rules, and table separators for clean text.
+        let cleanText = textContent
+            .replace(/#+\s*/g, '') // Remove ###, ##, # headers
+            .replace(/---\s*/g, '') // Remove horizontal rule
+            .replace(/\|/g, ' | ') // Add spacing around table pipes for readability
+            .replace(/ \s+/g, ' ') // Remove extra whitespace
+            .trim();
+        
+        // 2. Extract the main plan structure (Trek Name and top few lines)
+        // Find Trek Name Headers (1. Trek Name, 2. Trek Name, etc.)
+        const trekLines = cleanText.split('\n').filter(line => line.match(/^\s*(\d+\.|-)\s+/));
+        
+        // Use the introduction and the first 3 lines of trek recommendations
+        const shareContent = [
+            cleanText.split('\n')[0], // The first line (usually the intro)
+            '', // Add a line break
+            ...trekLines.slice(0, 3) // Get the first three trek lines
+        ].join('\n');
+
+        const finalMessage = `Hey! 🏔️ I found this amazing trek idea on TrekMate:\n\n${shareContent}\n\nWant to join me?`;
+        // ------------------------------------
+        
+        window.open(`https://wa.me/?text=${encodeURIComponent(finalMessage)}`, '_blank');
     };
 
     const handleEmailShare = () => {
